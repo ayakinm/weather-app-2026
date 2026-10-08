@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6fa" />
+    <meta
+      name="description"
+      content="A clear, beautiful seven-day weather forecast for any city."
+    />
+    <title>Weatherly — your day, in full view</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Weatherly home">
+          <span class="brand-mark" aria-hidden="true">✳</span>
+          <span>weatherly<span class="brand-period">.</span></span>
+        </a>
+        <div class="topbar-note"><span class="live-dot"></span> Live conditions</div>
+      </header>
+
+      <section class="search-section" aria-label="Find a city">
+        <div class="search-copy">
+          <p class="eyebrow">A little clarity for your day</p>
+          <h1>Weather, wherever.</h1>
+        </div>
+        <form class="search-form" id="search-form">
+          <label class="search-box" for="city-input">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+            <input
+              id="city-input"
+              name="city"
+              type="search"
+              placeholder="Search any city..."
+              autocomplete="off"
+              required
+              maxlength="100"
+              aria-label="City name"
+            />
+            <kbd>↵</kbd>
+          </label>
+          <button class="search-button" type="submit">Search</button>
+          <button class="icon-button location-button" id="location-button" type="button" aria-label="Use my location" title="Use my location">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-13a7 7 0 1 0-14 0c0 6.8 7 13 7 13Z"></path><circle cx="12" cy="9" r="2.4"></circle></svg>
+          </button>
+        </form>
+      </section>
+
+      <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
+
+      <div class="weather-content" id="weather-content" aria-busy="true">
+        <section class="overview-grid" aria-label="Current weather">
+          <article class="current-card">
+            <div class="current-topline">
+              <div>
+                <p class="eyebrow eyebrow-light" id="today-label">YOUR FORECAST</p>
+                <h2 class="city-name" id="city-name">Loading…</h2>
+                <p class="location-detail" id="location-detail">Finding your forecast</p>
+              </div>
+              <div class="unit-toggle" role="group" aria-label="Temperature units">
+                <button class="unit-button is-active" type="button" data-unit="c" aria-pressed="true">°C</button>
+                <button class="unit-button" type="button" data-unit="f" aria-pressed="false">°F</button>
+              </div>
+            </div>
+            <div class="current-weather">
+              <div>
+                <div class="temperature"><span id="current-temperature">--</span><span class="temperature-degree">°</span></div>
+                <p class="weather-description" id="weather-description">Loading conditions</p>
+                <p class="feels-like" id="feels-like">Feels like --°</p>
+              </div>
+              <div class="weather-art" id="weather-art" aria-hidden="true">☀️</div>
+            </div>
+            <div class="current-footer">
+              <span><span class="footer-icon" aria-hidden="true">↑</span> H <strong id="today-high">--°</strong></span>
+              <span><span class="footer-icon footer-low" aria-hidden="true">↓</span> L <strong id="today-low">--°</strong></span>
+              <span class="updated-label" id="updated-label"></span>
+            </div>
+          </article>
+
+          <article class="details-card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">AT A GLANCE</p>
+                <h2>The details</h2>
+              </div>
+              <button class="icon-button refresh-button" id="refresh-button" type="button" aria-label="Refresh forecast" title="Refresh forecast">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M6.1 9A6.5 6.5 0 0 1 17 6.5L20 12M4 12l3 5.5A6.5 6.5 0 0 0 17.9 15"></path></svg>
+              </button>
+            </div>
+            <div class="detail-list">
+              <div class="detail-item">
+                <span class="detail-icon humidity-icon" aria-hidden="true">◌</span>
+                <span class="detail-label">Humidity</span>
+                <strong id="humidity">--%</strong>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon wind-icon" aria-hidden="true">〰</span>
+                <span class="detail-label">Wind</span>
+                <strong id="wind-speed">-- km/h</strong>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon rain-icon" aria-hidden="true">⌁</span>
+                <span class="detail-label">Chance of rain</span>
+                <strong id="rain-chance">--%</strong>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon sun-icon" aria-hidden="true">☼</span>
+                <span class="detail-label">Sunrise</span>
+                <strong id="sunrise">--:--</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="forecast-section" aria-labelledby="hourly-heading">
+          <div class="section-heading forecast-heading">
+            <div>
+              <p class="eyebrow">THE NEXT 24 HOURS</p>
+              <h2 id="hourly-heading">Hour by hour</h2>
+            </div>
+            <span class="section-note">Your day, at a glance</span>
+          </div>
+          <div class="hourly-list" id="hourly-list" aria-label="Hourly forecast"></div>
+        </section>
+
+        <section class="forecast-section weekly-section" aria-labelledby="weekly-heading">
+          <div class="section-heading forecast-heading">
+            <div>
+              <p class="eyebrow">PLAN AHEAD</p>
+              <h2 id="weekly-heading">The week ahead</h2>
+            </div>
+            <span class="section-note">7-day forecast</span>
+          </div>
+          <div class="weekly-list" id="weekly-list" aria-label="Seven-day forecast"></div>
+        </section>
+      </div>
+
+      <footer class="app-footer">
+        <span>Made for wherever today takes you.</span>
+        <span>Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a></span>
+      </footer>
+    </main>
+  </body>
+</html>
